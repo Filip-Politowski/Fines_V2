@@ -18,6 +18,11 @@ public class FineSearchRequest {
     String signature;
     String phoneNumber;
     ViolationReason violationReason;
+    LocalDate violationDate;
+    LocalDate paymentDeadline;
+    String companyName;
+    FineStatus fineStatus;
+
 
 
 }
