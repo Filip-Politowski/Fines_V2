@@ -7,12 +7,14 @@ import pl.filip_politowski.mandaty.dao.FineSearchRequest;
 import pl.filip_politowski.mandaty.dto.request.FineRequest;
 import pl.filip_politowski.mandaty.dto.response.FineResponse;
 import pl.filip_politowski.mandaty.mapper.FineMapper;
-import pl.filip_politowski.mandaty.model.*;
+import pl.filip_politowski.mandaty.model.Currency;
+import pl.filip_politowski.mandaty.model.Employee;
+import pl.filip_politowski.mandaty.model.Fine;
+import pl.filip_politowski.mandaty.model.FineStatus;
 import pl.filip_politowski.mandaty.repository.EmployeeRepository;
 import pl.filip_politowski.mandaty.repository.FineDaoRepository;
 import pl.filip_politowski.mandaty.repository.FineRepository;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;

@@ -3,10 +3,8 @@ package pl.filip_politowski.mandaty.repository;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.*;
-import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import pl.filip_politowski.mandaty.dao.FineSearchRequest;
-import pl.filip_politowski.mandaty.dto.response.FineResponse;
 import pl.filip_politowski.mandaty.model.Employee;
 import pl.filip_politowski.mandaty.model.Fine;
 
