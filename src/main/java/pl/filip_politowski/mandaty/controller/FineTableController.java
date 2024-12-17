@@ -9,7 +9,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import pl.filip_politowski.mandaty.dao.FineSearchRequest;
 import pl.filip_politowski.mandaty.dto.response.FineResponse;
-import pl.filip_politowski.mandaty.model.*;
 import pl.filip_politowski.mandaty.service.EmployeeService;
 import pl.filip_politowski.mandaty.service.FineService;
 
@@ -17,9 +16,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
 
 @Controller
 @RequiredArgsConstructor
@@ -63,49 +60,28 @@ public class FineTableController {
     }
 
     @GetMapping("/search")
-    public String searchAndFilterFines(@RequestParam(value = "firstName", required = false) String firstName,
-                                       @RequestParam(value = "lastName", required = false) String lastName,
-                                       @RequestParam(value = "currency", required = false) Currency currency,
-                                       @RequestParam(value = "phoneNumber", required = false) String phoneNumber,
-                                       @RequestParam(value = "signature", required = false) String signature,
-                                       @RequestParam(value = "violationReason", required = false) ViolationReason violationReason,
-                                       @RequestParam(value = "violationDate", required = false) LocalDate violationDate,
-                                       @RequestParam(value = "paymentDeadline", required = false) LocalDate paymentDeadline,
-                                       @RequestParam(value = "companyName", required = false) String companyName,
-                                       @RequestParam(value = "fineStatus", required = false) FineStatus fineStatus,
-                                       Model model) {
-        FineSearchRequest fineSearchRequest = new FineSearchRequest();
-        fineSearchRequest.setFirstName(firstName);
-        fineSearchRequest.setLastName(lastName);
-        fineSearchRequest.setCurrency(currency);
-        fineSearchRequest.setPhoneNumber(phoneNumber);
-        fineSearchRequest.setSignature(signature);
-        fineSearchRequest.setViolationReason(violationReason);
-        fineSearchRequest.setViolationDate(violationDate);
-        fineSearchRequest.setPaymentDeadline(paymentDeadline);
-        fineSearchRequest.setCompanyName(companyName);
-        fineSearchRequest.setFineStatus(fineStatus);
+    public String searchAndFilterFines(@ModelAttribute FineSearchRequest fineSearchRequest, Model model) {
 
         List<FineResponse> fineResponses = fineService.findAllFinesFromPredicates(fineSearchRequest);
         List<String> companies = employeeService.findAllCompanies();
 
         model.addAttribute("companies", companies);
-        model.addAttribute("phoneNumber", phoneNumber);
-        model.addAttribute("signature", signature);
-        model.addAttribute("firstName", firstName);
-        model.addAttribute("lastName", lastName);
-        if (violationReason != null) {
-            model.addAttribute("violationReason", violationReason.toString());
+        model.addAttribute("phoneNumber", fineSearchRequest.getPhoneNumber());
+        model.addAttribute("signature", fineSearchRequest.getSignature());
+        model.addAttribute("firstName", fineSearchRequest.getFirstName());
+        model.addAttribute("lastName", fineSearchRequest.getLastName());
+        if (fineSearchRequest.getViolationReason() != null) {
+            model.addAttribute("violationReason", fineSearchRequest.getViolationReason().toString());
         }
-        model.addAttribute("violationDate", violationDate);
-        model.addAttribute("paymentDeadline", paymentDeadline);
-        model.addAttribute("companyName", companyName);
-        if (fineStatus != null) {
-            model.addAttribute("fineStatus", fineStatus.toString());
+        model.addAttribute("violationDate", fineSearchRequest.getViolationDate());
+        model.addAttribute("paymentDeadline", fineSearchRequest.getPaymentDeadline());
+        model.addAttribute("companyName", fineSearchRequest.getCompanyName());
+        if (fineSearchRequest.getFineStatus() != null) {
+            model.addAttribute("fineStatus", fineSearchRequest.getFineStatus().toString());
         }
 
-        if (currency != null) {
-            model.addAttribute("currency", currency.toString());
+        if (fineSearchRequest.getCurrency() != null) {
+            model.addAttribute("currency", fineSearchRequest.getCurrency().toString());
         }
 
         model.addAttribute("fines", fineResponses);

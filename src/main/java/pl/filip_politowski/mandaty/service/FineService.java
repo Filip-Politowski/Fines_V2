@@ -62,8 +62,9 @@ public class FineService {
         fine.setSignature(generatedSignature);
         fineRepository.save(fine);
     }
-    public List<FineResponse> findAllFinesFromPredicates(FineSearchRequest fineSearchRequest){
-            return  fineDaoRepository.findAllByCriteriaQuery(fineSearchRequest).stream().map(fineMapper::toFineResponse).collect(Collectors.toList())   ;
+
+    public List<FineResponse> findAllFinesFromPredicates(FineSearchRequest fineSearchRequest) {
+        return fineDaoRepository.findAllByCriteriaQuery(fineSearchRequest).stream().map(fineMapper::toFineResponse).collect(Collectors.toList());
     }
 
     public List<FineResponse> findAllFinesWithEmployees() {
@@ -129,34 +130,5 @@ public class FineService {
         fine.setEmployee(employee);
         fine.setEmployeeType(fineRequest.getEmployeeType());
         fineRepository.save(fine);
-    }
-
-    public List<FineResponse> searchFinesByName(String firstName, String lastName, FineStatus fineStatus, Currency currency, ViolationReason violationReason, LocalDate violationDate, LocalDate paymentDeadline, String companyName) {
-
-        List<Fine> fines = fineRepository.findAllByEmployeeFirstNameAndEmployeeLastName(firstName, lastName, fineStatus, currency, violationReason, violationDate, violationDate, paymentDeadline, paymentDeadline, companyName
-        );
-
-        fines.forEach(fine -> {
-            fine.setEmployee(employeeRepository.findById(fine.getEmployee().getId()).orElse(null));
-        });
-
-        return fines.stream().map(fineMapper::toFineResponse).collect(Collectors.toList());
-    }
-
-    public List<FineResponse> searchFinesBySignature(String signature, FineStatus fineStatus, Currency currency, ViolationReason violationReason, LocalDate violationDate, LocalDate paymentDeadline, String companyName) {
-        List<Fine> fines = fineRepository.findAllBySignature(signature, fineStatus, currency, violationReason, violationDate, violationDate, paymentDeadline, paymentDeadline, companyName);
-        fines.forEach(fine -> {
-            fine.setEmployee(employeeRepository.findById(fine.getEmployee().getId()).orElse(null));
-        });
-        return fines.stream().map(fineMapper::toFineResponse).collect(Collectors.toList());
-    }
-
-    public List<FineResponse> searchFinesAndFilterFines(String phoneNumber, Currency currency, FineStatus fineStatus, ViolationReason violationReason, LocalDate violationDate, LocalDate paymentDeadlineDate, String companyName) {
-        List<Fine> fines = fineRepository.findAllByEmployeeFilteredEmployee
-                (phoneNumber, fineStatus, currency, violationReason, violationDate, violationDate, paymentDeadlineDate, paymentDeadlineDate, companyName);
-        fines.forEach(fine -> {
-            fine.setEmployee(employeeRepository.findById(fine.getEmployee().getId()).orElse(null));
-        });
-        return fines.stream().map(fineMapper::toFineResponse).collect(Collectors.toList());
     }
 }
