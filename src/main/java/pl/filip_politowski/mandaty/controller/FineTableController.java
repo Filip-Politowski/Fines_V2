@@ -62,36 +62,47 @@ public class FineTableController {
         return "redirect:/fines";
     }
 
-    @GetMapping("/search/first-name/last-name")
-    public String searchFinesByFirstNameAndLastName(@RequestParam(value = "firstName", required = false) String firstName,
-                                                    @RequestParam(value = "lastName", required = false) String lastName,
-                                                    @RequestParam(value = "currency", required = false) Currency currency,
-                                                    @RequestParam(value = "phoneNumber", required = false) String phoneNumber,
-                                                    @RequestParam(value = "signature", required = false) String signature,
-                                                    Model model) {
+    @GetMapping("/search")
+    public String searchAndFilterFines(@RequestParam(value = "firstName", required = false) String firstName,
+                                       @RequestParam(value = "lastName", required = false) String lastName,
+                                       @RequestParam(value = "currency", required = false) Currency currency,
+                                       @RequestParam(value = "phoneNumber", required = false) String phoneNumber,
+                                       @RequestParam(value = "signature", required = false) String signature,
+                                       @RequestParam(value = "violationReason", required = false) ViolationReason violationReason,
+                                       @RequestParam(value = "violationDate", required = false) LocalDate violationDate,
+                                       @RequestParam(value = "paymentDeadline", required = false) LocalDate paymentDeadline,
+                                       @RequestParam(value = "companyName", required = false) String companyName,
+                                       @RequestParam(value = "fineStatus", required = false) FineStatus fineStatus,
+                                       Model model) {
         FineSearchRequest fineSearchRequest = new FineSearchRequest();
         fineSearchRequest.setFirstName(firstName);
         fineSearchRequest.setLastName(lastName);
         fineSearchRequest.setCurrency(currency);
         fineSearchRequest.setPhoneNumber(phoneNumber);
         fineSearchRequest.setSignature(signature);
+        fineSearchRequest.setViolationReason(violationReason);
+        fineSearchRequest.setViolationDate(violationDate);
+        fineSearchRequest.setPaymentDeadline(paymentDeadline);
+        fineSearchRequest.setCompanyName(companyName);
+        fineSearchRequest.setFineStatus(fineStatus);
+
         List<FineResponse> fineResponses = fineService.findAllFinesFromPredicates(fineSearchRequest);
         List<String> companies = employeeService.findAllCompanies();
-        model.addAttribute("companies", companies);
-        if (firstName == null && lastName == null && phoneNumber == null) {
-            model.addAttribute("signatureForm", "signature");
-        }
-        if (firstName == null && lastName == null && signature == null) {
-            model.addAttribute("phoneForm", "phone");
-        }
-        if (signature == null && phoneNumber == null) {
-            model.addAttribute("nameForm", "name");
-        }
 
+        model.addAttribute("companies", companies);
         model.addAttribute("phoneNumber", phoneNumber);
         model.addAttribute("signature", signature);
         model.addAttribute("firstName", firstName);
         model.addAttribute("lastName", lastName);
+        if (violationReason != null) {
+            model.addAttribute("violationReason", violationReason.toString());
+        }
+        model.addAttribute("violationDate", violationDate);
+        model.addAttribute("paymentDeadline", paymentDeadline);
+        model.addAttribute("companyName", companyName);
+        if (fineStatus != null) {
+            model.addAttribute("fineStatus", fineStatus.toString());
+        }
 
         if (currency != null) {
             model.addAttribute("currency", currency.toString());
@@ -102,74 +113,5 @@ public class FineTableController {
         return "fine_table";
     }
 
-    @GetMapping("/search/signature")
-    public String searchFinesBySignature(@RequestParam(value = "signature") String signature,
-                                         @RequestParam(value = "fineStatus", required = false) FineStatus fineStatus,
-                                         @RequestParam(value = "currency", required = false) Currency currency,
-                                         @RequestParam(value = "violationReason", required = false) ViolationReason violationReason,
-                                         @RequestParam(value = "violationDate", required = false) LocalDate violationDate,
-                                         @RequestParam(value = "paymentDeadline", required = false) LocalDate paymentDeadline,
-                                         @RequestParam(value = "companyName", required = false) String companyName,
-                                         Model model) {
-        List<FineResponse> fines = fineService.searchFinesBySignature(Objects.equals(signature, "") ? null : signature, fineStatus, currency, violationReason, violationDate, paymentDeadline, Objects.equals(companyName, "") ? null : companyName);
 
-        List<String> companies = employeeService.findAllCompanies();
-        model.addAttribute("companies", companies);
-        model.addAttribute("signatureForm", "signature");
-        model.addAttribute("companyName", companyName);
-        model.addAttribute("signature", signature);
-        if (fineStatus != null) {
-            model.addAttribute("fineStatus", fineStatus.toString());
-        }
-
-        if (currency != null) {
-            model.addAttribute("currency", currency.toString());
-        }
-
-        if (violationReason != null) {
-            model.addAttribute("violationReason", violationReason.toString());
-        }
-        model.addAttribute("violationDate", violationDate);
-        model.addAttribute("paymentDeadline", paymentDeadline);
-
-        model.addAttribute("fines", fines);
-        model.addAttribute("fines", fines);
-        return "fine_table";
-    }
-
-    @GetMapping("/search")
-    public String searchFinesByPhoneNumber(
-            @RequestParam(value = "phoneNumber", required = false) String phoneNumber,
-            @RequestParam(value = "fineStatus", required = false) FineStatus fineStatus,
-            @RequestParam(value = "currency", required = false) Currency currency,
-            @RequestParam(value = "violationReason", required = false) ViolationReason violationReason,
-            @RequestParam(value = "violationDate", required = false) LocalDate violationDate,
-            @RequestParam(value = "paymentDeadline", required = false) LocalDate paymentDeadline,
-            @RequestParam(value = "companyName", required = false) String companyName,
-            Model model) {
-
-        List<FineResponse> fines = fineService.searchFinesAndFilterFines(Objects.equals(phoneNumber, "") ? null : phoneNumber, currency, fineStatus, violationReason, violationDate, paymentDeadline, Objects.equals(companyName, "") ? null : companyName);
-
-        List<String> companies = employeeService.findAllCompanies();
-        model.addAttribute("companies", companies);
-        model.addAttribute("phoneForm", "phone");
-        model.addAttribute("companyName", companyName);
-        model.addAttribute("phoneNumber", phoneNumber);
-        if (fineStatus != null) {
-            model.addAttribute("fineStatus", fineStatus.toString());
-        }
-
-        if (currency != null) {
-            model.addAttribute("currency", currency.toString());
-        }
-
-        if (violationReason != null) {
-            model.addAttribute("violationReason", violationReason.toString());
-        }
-        model.addAttribute("violationDate", violationDate);
-        model.addAttribute("paymentDeadline", paymentDeadline);
-
-        model.addAttribute("fines", fines);
-        return "fine_table";
-    }
 }

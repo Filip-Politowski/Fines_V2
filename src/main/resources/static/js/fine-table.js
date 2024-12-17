@@ -1,51 +1,37 @@
 const toggleFormChange = () => {
     let searchType = document.getElementById("search-type").value;
-    const nameForm = document.getElementById("form-name");
-    const signatureForm = document.getElementById("form-signature");
-    const phoneForm = document.getElementById("phone-form")
+    const searchForm = document.querySelector("form");
+    const nameDiv = document.getElementById("name-input");
+    const phoneDiv = document.getElementById("phone-input");
+    const signatureDiv = document.getElementById("signature-input");
+
     if (searchType === "name") {
-        nameForm.style.display = "block";
-        signatureForm.style.display = "none";
-        phoneForm.style.display = "none";
+        nameDiv.style.display = "block";
+        signatureDiv.style.display = "none";
+        phoneDiv.style.display = "none";
     } else if (searchType === "signature") {
-        nameForm.style.display = "none";
-        signatureForm.style.display = "block";
-        phoneForm.style.display = "none";
+        nameDiv.style.display = "none";
+        signatureDiv.style.display = "block";
+        phoneDiv.style.display = "none";
     } else if (searchType === "phone") {
-        nameForm.style.display = "none";
-        signatureForm.style.display = "none";
-        phoneForm.style.display = "block";
+        nameDiv.style.display = "none";
+        signatureDiv.style.display = "none";
+        phoneDiv.style.display = "block";
     }
 
 }
 const clearFilters = () => {
 
-    const searchType = document.getElementById("search-type").value;
+    const form = document.querySelector("form");
 
-
-    let formId = "";
-    if (searchType === "name") {
-        formId = "form-name";
-    } else if (searchType === "signature") {
-        formId = "form-signature";
-    } else if (searchType === "phone") {
-        formId = "phone-form";
-    }
-
-
-    const form = document.getElementById(formId);
-
-
-    if (form) {
-        const inputs = form.querySelectorAll("input, select");
-        inputs.forEach(input => {
-            if (input.type === "text" || input.type === "date") {
-                input.value = "";
-            } else if (input.tagName === "SELECT") {
-                input.value = "";
-            }
-        });
-    }
+    const inputs = form.querySelectorAll("input, select");
+    inputs.forEach(input => {
+        if (input.type === "text" || input.type === "date") {
+            input.value = "";
+        } else if (input.tagName === "SELECT") {
+            input.value = "";
+        }
+    });
 };
 
 window.onload = function () {

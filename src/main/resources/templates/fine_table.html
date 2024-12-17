@@ -16,60 +16,48 @@
     <div class="select-search-container">
         <label for="search-type">Search by:</label>
         <select id="search-type" onchange="toggleFormChange()">
-            <option value="name" th:selected="${nameForm == 'name'}">First and Last Name</option>
-            <option value="signature" th:selected="${signatureForm == 'signature'}">Signature</option>
-            <option value="phone" th:selected="${phoneForm == 'phone'}">Phone Number</option>
+            <option value="name">First and Last Name</option>
+            <option value="signature">Signature</option>
+            <option value="phone">Phone Number</option>
         </select>
     </div>
-    <div id="form-name" class="form-container">
-        <form th:action="@{/fines/search/first-name/last-name}" method="get">
-            <div class="inputs-search">
+    <div id="search-form" class="form-container">
+        <form th:action="@{/fines/search}" method="get">
+            <div class="inputs-search" id="name-input">
                 <label for="firstName">First Name:</label>
                 <input type="text" id="firstName" name="firstName" placeholder="Enter First Name"
                        th:value="${firstName}">
-
                 <label for="lastName">Last Name:</label>
                 <input type="text" id="lastName" name="lastName" placeholder="Enter Last Name" th:value="${lastName}">
             </div>
-            <div th:insert="~{fragments/filter_form :: filter_form}" class="filter-container"></div>
-        </form>
-    </div>
-    <div id="form-signature" class="form-container">
-        <form th:action="@{/fines/search/first-name/last-name}" method="get">
-            <div class="inputs-search">
-                <label for="signature-search">Signature:</label>
-                <input type="text" id="signature-search" name="signature" placeholder="Enter signature"
-                       th:value="${signature}">
-            </div>
-
-            <div th:insert="~{fragments/filter_form :: filter_form}"></div>
-        </form>
-    </div>
-    <div id="phone-form" class="form-container">
-        <form th:action="@{/fines/search/first-name/last-name}" method="get">
-            <div class="inputs-search">
-                <label for="phone-number-search">Phone Number:</label>
-                <input type="text" id="phone-number-search" name="phoneNumber" placeholder="Enter phone number"
+            <div class="inputs-search" id="phone-input">
+                <label for="phoneNumber">Phone Number:</label>
+                <input type="text" id="phoneNumber" name="phoneNumber" placeholder="Enter PhoneNumber"
                        th:value="${phoneNumber}">
             </div>
-            <div th:insert="~{fragments/filter_form :: filter_form}"></div>
+            <div class="inputs-search" id="signature-input">
+                <label for="signature">Signature:</label>
+                <input type="text" id="signature" name="signature" placeholder="Enter Signature"
+                       th:value="${signature}">
+            </div>
+            <div th:insert="~{fragments/filter_form :: filter_form}" class="filter-container"></div>
         </form>
     </div>
     <div class="table-container">
         <table>
             <thead>
             <tr>
-                <th>Imię i Nazwisko</th>
-                <th>Spółka</th>
-                <th>Nr telefonu</th>
-                <th>Sygnatura Mandatu</th>
-                <th>Data Wykroczenia</th>
-                <th>Powód Wykroczenia</th>
-                <th>Kwota Mandatu</th>
-                <th>Opłata Administracyjna</th>
-                <th>Termin Płatności</th>
+                <th>Name</th>
+                <th>Company</th>
+                <th>Phone</th>
+                <th>Fine Signature</th>
+                <th>Violation Date</th>
+                <th>Violation Reason</th>
+                <th>Fine Amount</th>
+                <th>Administrative Fee</th>
+                <th>Payment Deadline</th>
                 <th>Status</th>
-                <th>Akcje</th>
+                <th>ACTIONS</th>
             </tr>
             </thead>
             <tbody>
@@ -83,7 +71,7 @@
                 <td th:text="${fine.amount} + ', ' + ${fine.currency} "></td>
                 <td th:text="${fine.administrationFee} + ', PLN' "></td>
                 <td th:text="${fine.paymentDeadline}"></td>
-                <td  th:style="${fine.fineStatus.toString() == 'PAID' ? 'color: Green' : 'color: Red'}">
+                <td th:style="${fine.fineStatus.toString() == 'PAID' ? 'color: Green' : 'color: Red'}">
                     <span th:class="${fine.fineStatus == 'PAID' ? 'PAID' : 'UNPAID'}"
                           th:text="${fine.fineStatus}"></span>
                 </td>

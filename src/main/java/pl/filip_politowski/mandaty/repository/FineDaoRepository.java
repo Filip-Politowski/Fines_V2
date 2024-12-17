@@ -57,6 +57,26 @@ public class FineDaoRepository {
                 Predicate currencyPredicate = criteriaBuilder.equal(root.get("currency"), fineSearchRequest.getCurrency());
                 predicates.add(currencyPredicate);
             }
+            if(fineSearchRequest.getViolationDate() != null) {
+                Predicate violationDatePredicate = criteriaBuilder.equal(root.get("violationDate"), fineSearchRequest.getViolationDate());
+                predicates.add(violationDatePredicate);
+            }
+            if(fineSearchRequest.getPaymentDeadline() != null) {
+                Predicate paymentDeadlinePredicate = criteriaBuilder.equal(root.get("paymentDeadline"), fineSearchRequest.getPaymentDeadline());
+                predicates.add(paymentDeadlinePredicate);
+            }
+            if(fineSearchRequest.getCompanyName() != null) {
+                Predicate companyNamePredicate = criteriaBuilder.like(employeeJoin.get("companyName"), "%" + fineSearchRequest.getCompanyName() + "%");
+                predicates.add(companyNamePredicate);
+            }
+            if(fineSearchRequest.getViolationReason() != null) {
+                Predicate violationReasonPredicate = criteriaBuilder.equal(root.get("violationReason"), fineSearchRequest.getViolationReason());
+                predicates.add(violationReasonPredicate);
+            }
+            if(fineSearchRequest.getFineStatus() != null) {
+                Predicate fineStatusPredicate = criteriaBuilder.equal(root.get("fineStatus"), fineSearchRequest.getFineStatus());
+                predicates.add(fineStatusPredicate);
+            }
 
         }
 
