@@ -65,8 +65,8 @@ public class FineService {
         fineRepository.save(fine);
     }
 
-    public List<FineResponse> findAllFinesFromPredicates(FineSearchRequest fineSearchRequest) {
-        return fineDaoRepository.findAllByCriteriaQuery(fineSearchRequest).stream().map(fineMapper::toFineResponse).collect(Collectors.toList());
+    public List<FineResponse> findAllFinesFromPredicates(FineSearchRequest fineSearchRequest, String sortOrder) {
+        return fineDaoRepository.findAllByCriteriaQuery(fineSearchRequest, sortOrder).stream().map(fineMapper::toFineResponse).collect(Collectors.toList());
     }
 
     public List<FineResponse> findAllFinesWithEmployees() {

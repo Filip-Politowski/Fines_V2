@@ -10,6 +10,7 @@ import pl.filip_politowski.mandaty.model.Fine;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @Repository
 
@@ -22,7 +23,7 @@ public class FineDaoRepository {
         this.criteriaBuilder = entityManager.getCriteriaBuilder();
     }
 
-    public List<Fine> findAllByCriteriaQuery(FineSearchRequest fineSearchRequest) {
+    public List<Fine> findAllByCriteriaQuery(FineSearchRequest fineSearchRequest, String sortOrder) {
         CriteriaQuery<Fine> criteriaQuery = criteriaBuilder.createQuery(Fine.class);
         List<Predicate> predicates = new ArrayList<>();
 
@@ -80,8 +81,15 @@ public class FineDaoRepository {
 
 
         criteriaQuery.where(criteriaBuilder.and(predicates.toArray(new Predicate[0])));
+        if(Objects.equals(sortOrder, "asc")){
+            criteriaQuery.orderBy(criteriaBuilder.asc(employeeJoin.get("lastName")));
+        }else{
+            criteriaQuery.orderBy(criteriaBuilder.desc(employeeJoin.get("lastName")));
+        }
+
 
         TypedQuery<Fine> typedQuery = entityManager.createQuery(criteriaQuery);
+
 
         return typedQuery.getResultList();
     }

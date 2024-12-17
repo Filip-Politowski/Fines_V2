@@ -26,11 +26,11 @@ public class FineTableController {
     private final EmployeeService employeeService;
 
     @GetMapping
-    public String finesTable(Model model, HttpSession session) {
+    public String finesTable(Model model) {
         List<FineResponse> fineResponses = fineService.findAllFinesWithEmployees();
         List<String> companies = employeeService.findAllCompanies();
         model.addAttribute("companies", companies);
-        session.isNew();
+        model.addAttribute("sortOrder", "asc");
         model.addAttribute("fines", fineResponses);
         return "fine_table";
     }
@@ -60,9 +60,9 @@ public class FineTableController {
     }
 
     @GetMapping("/search")
-    public String searchAndFilterFines(@ModelAttribute FineSearchRequest fineSearchRequest, Model model) {
+    public String searchAndFilterFines(@ModelAttribute FineSearchRequest fineSearchRequest,@RequestParam String sortOrder, Model model) {
 
-        List<FineResponse> fineResponses = fineService.findAllFinesFromPredicates(fineSearchRequest);
+        List<FineResponse> fineResponses = fineService.findAllFinesFromPredicates(fineSearchRequest, sortOrder);
         List<String> companies = employeeService.findAllCompanies();
 
         model.addAttribute("companies", companies);
@@ -70,6 +70,7 @@ public class FineTableController {
         model.addAttribute("signature", fineSearchRequest.getSignature());
         model.addAttribute("firstName", fineSearchRequest.getFirstName());
         model.addAttribute("lastName", fineSearchRequest.getLastName());
+        model.addAttribute("sortOrder", sortOrder);
         if (fineSearchRequest.getViolationReason() != null) {
             model.addAttribute("violationReason", fineSearchRequest.getViolationReason().toString());
         }

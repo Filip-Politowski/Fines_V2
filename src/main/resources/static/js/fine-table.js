@@ -32,6 +32,10 @@ const clearFilters = () => {
             input.value = "";
         }
     });
+    const sortingSelect = document.getElementById("sorting");
+    if (sortingSelect) {
+        sortingSelect.value = "asc";
+    }
 };
 
 window.onload = function () {

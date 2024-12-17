@@ -1,0 +1,22 @@
+<div th:fragment="pagination">
+    <form th:action="@{/fines/search}" method="get">
+        <!-- Ukryte pola przekazujące wszystkie filtry i parametry -->
+        <input type="hidden" name="firstName" th:value="${firstName}">
+        <input type="hidden" name="lastName" th:value="${lastName}">
+        <input type="hidden" name="phoneNumber" th:value="${phoneNumber}">
+        <input type="hidden" name="signature" th:value="${signature}">
+        <input type="hidden" name="fineStatus" th:value="${fineStatus}">
+        <input type="hidden" name="currency" th:value="${currency}">
+        <input type="hidden" name="violationReason" th:value="${violationReason}">
+        <input type="hidden" name="violationDate" th:value="${violationDate}">
+        <input type="hidden" name="paymentDeadline" th:value="${paymentDeadline}">
+        <input type="hidden" name="companyName" th:value="${companyName}">
+        <input type="hidden" name="size" th:value="${pageSize}">
+
+        <!-- Przycisk do poprzedniej strony -->
+        <button type="submit" th:disabled="${currentPage == 0}" name="currentPage" th:value="${currentPage - 1}">Previous</button>
+
+        <!-- Przycisk do następnej strony -->
+        <button type="submit" th:disabled="${currentPage + 1 >= totalPages}" name="currentPage" th:value="${currentPage + 1}">Next</button>
+    </form>
+</div>

@@ -47,6 +47,13 @@
             </th:block>
         </select>
     </div>
+    <div class="input-container">
+        <label for="sorting">Sort order:</label>
+        <select id="sorting" name="sortOrder">
+            <option value="asc" th:selected ="${sortOrder == 'asc'}">A-Z</option>
+            <option value="desc" th:selected ="${sortOrder == 'desc'}">Z-A</option>
+        </select>
+    </div>
     <div class="button-container">
         <button type="submit">Search</button>
         <button onclick="clearFilters()">Clear filters</button>
